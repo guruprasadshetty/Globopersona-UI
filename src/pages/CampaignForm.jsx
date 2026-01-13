@@ -1,90 +1,187 @@
-import { FiMail, FiTag, FiEdit, FiClock } from "react-icons/fi";
-import Button from "../components/ui/Button";
+import { useCampaigns } from "../context/CampaignContext";
+import { useState } from "react";
+import { FiArrowRight, FiArrowLeft, FiCheck } from "react-icons/fi";
 
 export default function CampaignForm() {
-  return (
-    <>
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Create Campaign</h1>
+  const { addCampaign } = useCampaigns();
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({
+    name: "",
+    subject: "",
+    audience: "",
+    content: "",
+  });
 
-      <div className="bg-white shadow-xl rounded-2xl p-8 w-full lg:w-3/4 border border-gray-100">
-        {/* Header Info */}
-        <div className="mb-6">
-          <p className="text-gray-600">
-            Set up your email campaign details and configure the content.
+  const update = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  return (
+    <div className="space-y-10 animate-fadeIn">
+      {/* HEADER */}
+      <div
+        className="relative overflow-hidden rounded-3xl p-8 
+                      bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 
+                      text-white shadow-xl"
+      >
+        <div
+          className="absolute inset-0 opacity-20 
+                        bg-[radial-gradient(circle_at_top_left,#ffffff,transparent_40%)]"
+        />
+        <div className="relative">
+          <h1 className="text-4xl font-extrabold tracking-tight">
+            Create Campaign
+          </h1>
+          <p className="text-lg opacity-90 mt-1">
+            Build and launch your email campaign step by step
           </p>
         </div>
+      </div>
 
-        {/* GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Campaign Name */}
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 flex items-center gap-2">
-              <FiTag /> Campaign Name
-            </label>
+      {/* PROGRESS */}
+      <div className="flex items-center gap-4">
+        {[1, 2, 3].map((s) => (
+          <div key={s} className="flex items-center gap-2">
+            <div
+              className={`w-10 h-10 rounded-full flex items-center justify-center 
+                font-bold transition
+                ${
+                  step >= s
+                    ? "bg-purple-600 text-white"
+                    : "bg-gray-200 text-gray-600"
+                }`}
+            >
+              {step > s ? <FiCheck /> : s}
+            </div>
+            {s < 3 && (
+              <div className="w-10 h-1 bg-gray-200 rounded">
+                <div
+                  className={`h-1 rounded bg-purple-600 transition-all`}
+                  style={{ width: step > s ? "100%" : "0%" }}
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* FORM CARD */}
+      <div className="bg-white rounded-3xl shadow-lg border p-8">
+        {/* STEP 1 */}
+        {step === 1 && (
+          <div className="space-y-6 animate-fadeIn">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Campaign Basics
+            </h2>
+
             <input
-              className="border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-purple-400 outline-none"
-              placeholder="Ex: Welcome Campaign"
+              name="name"
+              placeholder="Campaign Name"
+              value={form.name}
+              onChange={update}
+              className="input"
+            />
+
+            <input
+              name="subject"
+              placeholder="Email Subject"
+              value={form.subject}
+              onChange={update}
+              className="input"
             />
           </div>
+        )}
 
-          {/* Subject */}
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 flex items-center gap-2">
-              <FiMail /> Subject Line
-            </label>
-            <input
-              className="border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-purple-400 outline-none"
-              placeholder="Ex: Welcome to our platform 🎉"
+        {/* STEP 2 */}
+        {step === 2 && (
+          <div className="space-y-6 animate-fadeIn">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Audience & Content
+            </h2>
+
+            <select
+              name="audience"
+              value={form.audience}
+              onChange={update}
+              className="input"
+            >
+              <option value="">Select audience</option>
+              <option>Marketing Leads</option>
+              <option>Existing Customers</option>
+              <option>Newsletter Subscribers</option>
+            </select>
+
+            <textarea
+              name="content"
+              rows="4"
+              placeholder="Email content..."
+              value={form.content}
+              onChange={update}
+              className="input"
             />
           </div>
+        )}
 
-          {/* Schedule */}
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 flex items-center gap-2">
-              <FiClock /> Schedule Campaign
-            </label>
-            <select className="border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-purple-400 outline-none">
-              <option>Send Now</option>
-              <option>Schedule</option>
-              <option>Save as Draft</option>
-            </select>
+        {/* STEP 3 */}
+        {step === 3 && (
+          <div className="space-y-6 animate-fadeIn">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Review Campaign
+            </h2>
+
+            <div className="bg-gray-50 rounded-xl p-6 space-y-2">
+              <p>
+                <strong>Name:</strong> {form.name || "-"}
+              </p>
+              <p>
+                <strong>Subject:</strong> {form.subject || "-"}
+              </p>
+              <p>
+                <strong>Audience:</strong> {form.audience || "-"}
+              </p>
+              <p>
+                <strong>Content:</strong> {form.content || "-"}
+              </p>
+            </div>
           </div>
+        )}
 
-          {/* Audience */}
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 flex items-center gap-2">
-              🎯 Target Audience
-            </label>
-            <select className="border rounded-lg p-3 mt-1 focus:ring-2 focus:ring-purple-400 outline-none">
-              <option>All Subscribers</option>
-              <option>New Users</option>
-              <option>Inactive Users</option>
-            </select>
-          </div>
-        </div>
+        {/* ACTIONS */}
+        <div className="flex justify-between mt-10">
+          {step > 1 ? (
+            <button
+              onClick={() => setStep(step - 1)}
+              className="flex items-center gap-2 px-5 py-2 
+                         rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200"
+            >
+              <FiArrowLeft /> Back
+            </button>
+          ) : (
+            <div />
+          )}
 
-        {/* Email Content */}
-        <div className="mt-6">
-          <label className="text-sm text-gray-500 flex items-center gap-2 mb-1">
-            <FiEdit /> Email Content
-          </label>
-
-          <textarea
-            rows={8}
-            className="w-full border rounded-xl p-4 focus:ring-2 focus:ring-purple-400 outline-none"
-            placeholder="Write your amazing email content here..."
-          ></textarea>
-        </div>
-
-        {/* Action Bar */}
-        <div className="flex justify-end mt-8 gap-4">
-          <button className="px-5 py-2 rounded-lg border hover:bg-gray-100 transition">
-            Cancel
-          </button>
-
-          <Button>Create Campaign</Button>
+          {step < 3 ? (
+            <button
+              onClick={() => setStep(step + 1)}
+              className="flex items-center gap-2 px-6 py-2 
+                         rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 
+                         text-white hover:shadow-lg"
+            >
+              Next <FiArrowRight />
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                addCampaign(form);
+                setStep(1);
+                alert("Campaign created successfully!");
+              }}
+              className="flex items-center gap-2 px-6 py-2 
+             rounded-xl bg-green-600 text-white hover:bg-green-700"
+            >
+              <FiCheck /> Create Campaign
+            </button>
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

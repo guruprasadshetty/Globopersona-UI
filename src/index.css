@@ -2,10 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+/* -----------------------------
+   Global styling
+-------------------------------- */
 body {
-  background: #f4f6fb;
+  background: linear-gradient(180deg, #f7f5ff 0%, #f4f6fb 100%);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
+/* -----------------------------
+   Reusable form input styling
+-------------------------------- */
+.input {
+  @apply w-full border border-gray-300 rounded-xl px-4 py-2.5 
+         text-gray-700 
+         focus:outline-none focus:ring-2 focus:ring-purple-400 
+         transition;
+}
+
+/* -----------------------------
+   Fade-in animation
+-------------------------------- */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -16,6 +39,56 @@ body {
     transform: translateY(0);
   }
 }
+
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
+}
+
+/* -----------------------------
+   Rise animation (page load)
+-------------------------------- */
+@keyframes rise {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-rise {
+  animation: rise 0.4s ease-out;
+}
+
+/* -----------------------------
+   Soft pulse highlight
+-------------------------------- */
+@keyframes pulseSoft {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(168, 85, 247, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulseSoft 2.5s infinite;
+}
+
+/* -----------------------------
+   Scrollbar (subtle, premium)
+-------------------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.4);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
 }

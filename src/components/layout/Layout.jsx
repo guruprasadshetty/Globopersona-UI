@@ -3,11 +3,15 @@ import Header from "./Header";
 
 export default function Layout({ children }) {
   return (
-    <div className="flex">
+    <div className="min-h-screen bg-transparent">
+      {/* Sidebar */}
       <Sidebar />
-      <div className="ml-64 w-full">
+
+      {/* Main area (offset by sidebar width) */}
+      <div className="ml-64 min-h-screen">
         <Header />
-        <div className="p-6">{children}</div>
+
+        <main className="p-6">{children}</main>
       </div>
     </div>
   );

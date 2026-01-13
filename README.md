@@ -1,7 +1,6 @@
 # Globopersona Admin Dashboard
 
-Globopersona is a modern **admin-side web dashboard** designed for marketing teams to create, manage, and analyze email campaigns.  
-The application focuses on clean UI, interactivity, and real-world dashboard behavior using frontend technologies.
+Globopersona is a modern **admin-side web dashboard** designed for marketing teams to create, manage, and analyze email campaigns. The application focuses on clean UI, interactivity, and real-world dashboard behavior using frontend technologies.
 
 ---
 
